@@ -4,12 +4,15 @@
 #include "pch.h"
 #include <iostream>
 #include <algorithm>
+#include <vector>
+#include<string>
+
 using namespace std;
 #define Tnodenum 8
 #define sidenum 13
 #define zero 100
 #define Lheadnum 7
-
+#define puzzlenum 8
 //定义树节点
 struct Tnode {
 	int puzzleint[8];
@@ -24,12 +27,7 @@ struct Tnode {
 };
 struct Tnode* root = nullptr;
 
-//定义循环链表
-struct Lnode {
-	int Lint;
-	struct Lint *next;
-};
-int *Lhead_pointer[Lheadnum];//定义保存循环链表头指针的数组
+
 
 int f1[8], f2[8], f3[8], f4[8], f5[8];
 //移动函数1 2*2移动
@@ -94,26 +92,71 @@ void CreateTree(Tnode** T, int *PINT) {
 
 }
 
+void userenter(vector<int> &v) {
+	bool temp=true;
+	do
+	{
+		//int maxNo = -1;
+		for (size_t i = 0; i < v.size(); i++)
+		{
+			int a;
+			do {
+				cout << "enter your puzzle NO." << i+1 << " number from 1 to 20" << endl;
+				cin >> a;
+			} while ((a <= 0) || (a > 20));
+			v[i] = a;
+			//maxNo = max(maxNo, v[i]);
+		}
+		//判断用户输入是否重复
+		vector<int> count(21, 0);
+		for (int i = 0; i < v.size(); i++) 
+		{
+			if (count[v[i]] == 1) {
+				temp = false;
+				break;
+			}
+			count[v[i]]++;
+		}
+		if (!temp) 
+			cout << "there is a repeated number, please continue" << endl;
+	} while (!temp);
+}
 
+void userchoose(vector<int> &v) {
+	string a;
+	cout << "do you want to choose a 15puzzle? Y or N" << endl;
+	cin >> a;
+	if (a == "Y")
+	{
+		vector<int> temp;
+		for (int i = 0; i < 20; ++i)
+		{
+			temp.push_back(i + 1);
+		}
+			random_shuffle(temp.begin(), temp.end());
+		for (int i = 0; i < puzzlenum; i++)
+		{
+			cout << temp[i] << " ";
+		}
+		
+	}
+	
+}
 int main()
 {
-	int puzzlestr[8] = { 1,2,3,4,5,6,7,zero };
-	Tnode** treelocation = &root;
-	CreateTree(treelocation, puzzlestr);
-	cout << root << endl;
+	vector<int> puzzlestr{ 1,2,3,4,5,6,7,zero };
+	//userenter(puzzlestr);
+	userchoose(puzzlestr);
+	//Tnode** treelocation = &root;
+	//CreateTree(treelocation, puzzlestr);
+	//cout << root << endl;
 
 
-	/*for (size_t i = 0; i < Tnodenum-1; i++)
-	{
-		int a;
-		cout << "enter your puzzle NO"<<i<<"number"<<endl;
-		cin >> a;
-		T->puzzleint[i] = a;
-	}
+	
 
 
-	CreateTree(T);
-	*/
+
+	
 
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
