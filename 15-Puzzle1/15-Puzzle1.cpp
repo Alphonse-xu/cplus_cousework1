@@ -6,7 +6,8 @@
 #include <algorithm>
 #include <vector>
 #include<string>
-
+#include<fstream>
+#include<iomanip>
 using namespace std;
 #define Tnodenum 8
 #define sidenum 13
@@ -91,7 +92,7 @@ void CreateTree(Tnode** T, int *PINT) {
 	}
 
 }
-
+//用户输入配置
 void userenter(vector<int> &v) {
 	bool temp=true;
 	do
@@ -121,42 +122,97 @@ void userenter(vector<int> &v) {
 			cout << "there is a repeated number, please continue" << endl;
 	} while (!temp);
 }
-
+//用户选择数字随机生成配置
 void userchoose(vector<int> &v) {
 	string a;
+	unsigned int b;
 	cout << "do you want to choose a 15puzzle? Y or N" << endl;
 	cin >> a;
 	if (a == "Y")
 	{
+		cout << "how many configurations you want?" << endl;
+		cin >> b;
 		vector<int> temp;
 		for (int i = 0; i < 20; ++i)
 		{
 			temp.push_back(i + 1);
 		}
-			random_shuffle(temp.begin(), temp.end());
-		for (int i = 0; i < puzzlenum; i++)
+		for (size_t i = 0; i < b; i++)
 		{
-			cout << temp[i] << " ";
+			random_shuffle(temp.begin(), temp.end());
+			for (int i = 0; i < puzzlenum; i++)
+			{
+				cout << temp[i] << " ";
+				v[i] = temp[i];
+			}
+			cout << endl;
 		}
-		
 	}
-	
+}
+//创建输出文件
+void creatfile(vector<int> &v) {
+	int par = ios::out;
+	//if (cond) 
+		//par = par | std::ios_base::app;
+	ofstream ofile("15puzzle.txt", par);
+	if (!ofile) {
+		cout << "error opening destination file." << endl;
+		return;
+	}
+	//if (!cond)//选写 需要读文件判定里面有没有写入过
+		ofile << "1" << endl;//需要判定有多少配置需要写入(从USERCHOOSE函数传入)
+		/*for (size_t i = 0; i < length; i++)
+		{
+		缺一个循环输出用户选择数量的配置
+		}*/
+	for (size_t i = 0; i < 3; i++)
+	{
+		for (size_t j = 0; j < 3; j++)
+		{
+			if ((j + 3 * i) == 8) ofile << setw(3) << setiosflags(ios::left);
+			else
+			ofile << setw(3) << setiosflags(ios::left) << v[j+3*i];
+		}
+		ofile << endl;
+	}
+	ofile.close();
+}
+//读文件（读写可以合并）
+void readfile(vector<int> &v) {
+	int total;//读文件第一行判断有几个配置
+	ifstream ifile("15puzzle.txt", ios::in);
+	if (!ifile) {
+		cout << "error opening destination file." << endl;
+		return;
+	}
+	int a;
+	ifile >> total;
+	cout << total<<endl;
+	int x = 0;
+	while (true) 
+	{
+		ifile >> v[x];
+		x++;
+		if (ifile.eof() != 0) break;
+	}
+	ifile.close();
+	for (int i = 0; i < puzzlenum; i++)
+	{
+		cout << v[i] << " ";
+	}
 }
 int main()
 {
-	vector<int> puzzlestr{ 1,2,3,4,5,6,7,zero };
+	vector<int> puzzlestr{ 1,2,3,4,5,6,7,8,zero };
 	//userenter(puzzlestr);
 	userchoose(puzzlestr);
+	creatfile(puzzlestr);
+	readfile(puzzlestr);
 	//Tnode** treelocation = &root;
 	//CreateTree(treelocation, puzzlestr);
 	//cout << root << endl;
+	return 0;
 
-
-	
-
-
-
-	
 
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
