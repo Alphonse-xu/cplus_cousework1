@@ -1,0 +1,9 @@
+1
+13 2  10 
+3  1  12 
+8  20 
+row = 0
+column = 0
+reverse row = 0
+reserve column = 0
+

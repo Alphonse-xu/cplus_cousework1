@@ -14,14 +14,16 @@ using namespace std;
 class solution{
 public:
 	solution()=default;
-	//friend 
 	void readfile();
-	//void mapsequence();
-	//void printcon();
-	//void creatfile();
+	void mapsequence();
+	void printcon();
+	void creatfile();
 private:
 	vector<vector<int>> spuzzle;
-	rsize_t row;
+	size_t row;
+	size_t column;
+	size_t reverse_row;
+	size_t reserve_column;
 	int config_num = 0;
 };
 

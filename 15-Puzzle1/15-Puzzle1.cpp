@@ -1,9 +1,13 @@
 ﻿// ConsoleApplication12.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "pch.h"
-using namespace std;
 #include <iostream>
+//#include <thread>
+
+#include "Puzzle.h"
+#include "solution.h"
+
+using namespace std;
 //
 /*class puzzle {
 	//friend
@@ -85,38 +89,66 @@ void CreateTree(Tnode** T, int *PINT) {
 int main()
 {
 	int mod;
-	bool flag;
+	bool flag=true;
+	bool tryflag = false;
+	bool doflag = true;
 	unsigned int config_num;
-	puzzle p8;
-	solution s8;
 
+	puzzle p15;
+	solution s15;
 	do {
-		cout << "if you want to enter your puzzle.please press 1" << endl << "if you want to creat puzzle in rando way.please press 2 " << endl;
-		cin >> mod;
-		switch (mod) {
-		case 1:
-			p8.userenter();
-			p8.creatfile();
-			flag = false;
-			break;
-		case 2:
-			cout << "how many configurations you want?" << endl;
-			cin >> config_num;
-			p8.userchoose(config_num);
-			p8.creatfile(config_num);
-			flag = false;
-			break;
-		default:
-			cout << "please choose you what want again" << endl;
-			flag = true;
+		
+		do {
+			cout << "if you want to enter your puzzle.please press 1" << endl << "if you want to creat puzzle in rando way.please press 2 " << endl;
+			cin >> mod;
+			switch (mod) {
+			case 1:
+				p15.userenter();
+				p15.creatfile();
+				flag = false;
+				break;
+			case 2:
+				cout << "how many configurations you want?" << endl;
+				cin >> config_num;
+				p15.userchoose(config_num);
+				p15.creatfile(config_num);
+				flag = false;
+				break;
+			default:
+				cout << "please choose you what want again" << endl;
+				flag = true;
+			}
+		}while (flag);
+		
+		
+		try {
+			s15.readfile();
 		}
-	}
-	while (flag);
-	
-	s8.readfile();
-	//s8.mapsequence();
-	//s8.creatfile();
-	
+		catch (const char* msg) {
+			cout << msg << endl;
+		}
+		s15.mapsequence();
+		//再来一次
+		
+		do {
+			cout << "do you want to try again?press 1 to continue. press 2 to exit." << endl;
+			cin >> mod;
+			switch (mod) {
+			case 1:
+				tryflag = false;
+				doflag = true;
+				break;
+			case 2:
+				doflag = false;
+				tryflag = false;
+				break;
+			default:
+				cout << "please choose you what want again" << endl;
+				tryflag = true;
+			}
+		} while (tryflag);
+		
+	} while (doflag);
 	return 0;
 	//Tnode** treelocation = &root;
 	//CreateTree(treelocation, puzzlestr);
