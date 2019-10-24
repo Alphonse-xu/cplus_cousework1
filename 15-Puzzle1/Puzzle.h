@@ -12,7 +12,7 @@ public:
 	puzzle() = default;
 	int puzzlenum = 16;
 	int sidenum = 4;
-	void userenter(int **p);
+	void userenter();
 	template<typename T> void userchoose(T& num){
 		//用户选择数字随机生成配置
 		string a;
@@ -36,7 +36,7 @@ public:
 	void creatfile();
 	void creatfile(int num);
 private:
-	//vector<int> puzzlestr{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,zero };
+	vector<int> puzzlestr{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,zero };
 	vector<vector<int>> ppuzzlestr;
 
 };

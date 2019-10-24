@@ -16,9 +16,6 @@ int main()
 	bool tryflag = false;
 	bool doflag = true;
 	unsigned int config_num;
-	int puzzlestr[16]{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,zero };
-	int *ppointer = puzzlestr;
-	int **ppuzzlepointer = &ppointer;
 	puzzle p15;
 	solution s15;
 	do {
@@ -34,7 +31,7 @@ int main()
 				s15.sidenum = p15.sidenum;
 				p15.puzzlenum = p15.sidenum * p15.sidenum;
 				s15.puzzlenum = s15.sidenum * s15.sidenum;
-				p15.userenter(ppuzzlepointer);
+				p15.userenter();
 				p15.creatfile();
 				flag = false;
 				break;

@@ -3,7 +3,8 @@
 1  12 8  20 
 5  16 19 6  
 15 14 11 
-row = 0
+total for row & column, including reverse, in this configuration
+2 =23 =0row = 0
 column = 0
 reverse row = 0
 reserve column = 0
@@ -12,7 +13,8 @@ reserve column = 0
 4  8  19 10 
 20 5  16 11 
 14 3  6  
-row = 479001600
+total for row & column, including reverse, in this configuration
+2 =23 =0row = 479001600
 column = 479001600
 reverse row = 479001600
 reserve column = 479001600

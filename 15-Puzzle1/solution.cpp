@@ -53,6 +53,8 @@ void solution::mapsequence() {
 		}
 		row[k] = row[k] + (temp  * continue_num / 2);
 	}
+
+	mapsequence_all();
 	//多线程
 	thread t1([this]()
 	{
@@ -97,8 +99,10 @@ void solution::mapsequence_all() {
 		//
 		for (int i = 0; i < (total - sidenum); i++)
 		{
-			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum])column2++;
-			if ((spuzzle[k][i] - 1) == spuzzle[k][i + sidenum])rev_column2++;
+			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum])
+				column2++;
+			if ((spuzzle[k][i] - 1) == spuzzle[k][i + sidenum])
+				rev_column2++;
 		}
 		//
 		for (int i = 0; i < (total - 2 * sidenum); i++)
@@ -160,8 +164,8 @@ void solution::printcon() {
 			cout << endl;
 		}
 		cout << "total for row & column, including reverse, in this configuration" << endl;
-		cout <<"2 ="<<row2+column2+rev_row2+rev_column2;
-		cout <<"3 ="<<row3+column3+rev_row3+rev_column3;
+		cout << "2 =" << row2 + column2 + rev_row2 + rev_column2 << endl;
+		cout <<"3 ="<<row3+column3+rev_row3+rev_column3<<endl;
 		cout << "row = " << row[k]<<endl;
 		cout << "column = " << row[k]<<endl;
 		cout << "reverse row = " << row[k]<<endl;
@@ -197,8 +201,8 @@ void solution::creatfile() {
 			ofile << endl;
 		}
 		ofile << "total for row & column, including reverse, in this configuration" << endl;
-		ofile << "2 =" << row2 + column2 + rev_row2 + rev_column2;
-		ofile << "3 =" << row3 + column3 + rev_row3 + rev_column3;
+		ofile << "2 =" << row2 + column2 + rev_row2 + rev_column2 << endl;;
+		ofile << "3 =" << row3 + column3 + rev_row3 + rev_column3<<endl;
 		ofile << "row = " << row[k] << endl;
 		ofile << "column = " << row[k] << endl;
 		ofile << "reverse row = " << row[k] << endl;

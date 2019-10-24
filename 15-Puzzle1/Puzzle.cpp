@@ -12,7 +12,7 @@ using namespace std;
 
 
 //用户输入配置
-void puzzle::userenter(int *p) {
+void puzzle::userenter() {
 	bool temp = true;
 	do
 	{
