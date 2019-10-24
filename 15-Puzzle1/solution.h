@@ -4,26 +4,32 @@
 #include <vector>
 using namespace std;
 
-#define sidenum 13
-#define zero 100
-#define Lheadnum 7
-#define puzzlenum 8
-
 
 
 class solution{
 public:
 	solution()=default;
+	int puzzlenum = 16;
+	int sidenum = 4;
 	void readfile();
 	void mapsequence();
 	void printcon();
 	void creatfile();
+	void mapsequence_all();
 private:
 	vector<vector<int>> spuzzle;
-	size_t row;
-	size_t column;
-	size_t reverse_row;
-	size_t reserve_column;
+	vector<unsigned long long> row;
+	unsigned long long column;
+	unsigned long long reverse_row;
+	unsigned long long reserve_column;
+	unsigned long long row2;
+	unsigned long long row3;
+	unsigned long long rev_row2;
+	unsigned long long rev_row3;
+	unsigned long long column2;
+	unsigned long long column3;
+	unsigned long long rev_column2;
+	unsigned long long rev_column3;
 	int config_num = 0;
 };
 

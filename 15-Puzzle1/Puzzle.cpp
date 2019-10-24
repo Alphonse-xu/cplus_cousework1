@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-#include <algorithm>
+
 #include <vector>
 #include<string>
 #include<fstream>
@@ -12,12 +12,11 @@ using namespace std;
 
 
 //用户输入配置
-void puzzle::userenter() {
+void puzzle::userenter(int *p) {
 	bool temp = true;
 	do
 	{
-		//int maxNo = -1;
-		for (size_t i = 0; i < puzzlestr.size(); i++)
+		for (int i = 0; i < puzzlestr.size(); i++)
 		{
 			int a;
 			do {
@@ -25,7 +24,6 @@ void puzzle::userenter() {
 				cin >> a;
 			} while ((a <= 0) || (a > 20));
 			puzzlestr[i] = a;
-			//maxNo = max(maxNo, v[i]);
 		}
 		//判断用户输入是否重复
 		vector<int> count(21, 0);
@@ -42,56 +40,36 @@ void puzzle::userenter() {
 	} while (!temp);
 	
 }
-//用户选择数字随机生成配置
-void puzzle::userchoose(int num) {
-	string a;
-	ppuzzlestr.resize(num);
-	vector<int> temp;//生成20序列
-		for (int i = 0; i < 20; ++i)
-		{
-			temp.push_back(i + 1);
-		}
-		for (size_t i = 0; i < num; i++)
-		{
-			random_shuffle(temp.begin(), temp.end());//打乱向量元素，选择需要数量的序列
-			for (int j = 0; j < puzzlenum; j++)
-			{
 
-				cout << temp[j] << " ";
-				ppuzzlestr[i].push_back(temp[j]);
-			}
-			cout << endl;
-		}
-}
 //创建输出文件
 void puzzle::creatfile() {
-	int par = ios::out;
-	//if (cond) 
-	//par = ios::out | std::ios_base::app;覆盖文件写入或接着文件写入
-	ofstream ofile("15puzzle.txt", par);
+	string filename;
+	auto id = filename.find("*");
+	if (id == string::npos) cout << "safe filename" << endl;
+	else
+		cout << "unsafe filename" << endl;
+	ofstream ofile("15puzzle.txt", ios::out);//ios::out | std::ios_base::app;覆盖文件写入或接着文件写入
 	if (!ofile) {
 		cout << "error opening destination file." << endl;
 		return;
 	}
 	ofile << "1" << endl;
 	//写入用户输入的一个配置
-		for (size_t i = 0; i < sqrt(puzzlenum+1); i++)
+		for (int i = 0; i < sidenum; i++)
 		{
-			for (size_t j = 0; j < sqrt(puzzlenum + 1); j++)
+			for (int j = 0; j < sidenum; j++)
 			{
-				if ((j + 3 * i) == puzzlenum) break;
+				if ((j + sidenum * i) == puzzlenum-1) break;
 				else
-				ofile << setw(3) << setiosflags(ios::left) << puzzlestr[j + 3 * i];
+				ofile << setw(3) << setiosflags(ios::left) << puzzlestr[j + sidenum * i];
 			}
 			ofile << endl;
 		}
 	ofile.close();
 }
-//
+
 void puzzle::creatfile(int num) {
 	int par = ios::out;
-	//if (cond) 
-	//par = ios::out | std::ios_base::app;
 	ofstream ofile("15puzzle.txt", par);
 	if (!ofile) {
 		cout << "error opening destination file." << endl;
@@ -99,18 +77,19 @@ void puzzle::creatfile(int num) {
 	}
 	//if (!cond)选写 需要读文件判定里面有没有写入过
 	ofile << num << endl;//配置数量
-	for (size_t k = 0; k < num; k++)
+	for (int k = 0; k < num; k++)
 	{	//循环输出用户选择数量的配置
-		for (size_t i = 0; i < sqrt(puzzlenum + 1); i++)
+		for (int i = 0; i < sidenum; i++)
 		{
-			for (size_t j = 0; j < sqrt(puzzlenum + 1); j++)
+			for (int j = 0; j < sidenum; j++)
 			{
-				if ((j + 3 * i) == puzzlenum) break;
+				if ((j + sidenum * i) == puzzlenum-1) break;
 				else
-					ofile << setw(3) << setiosflags(ios::left) << ppuzzlestr[k][j + 3 * i];
+					ofile << setw(3) << setiosflags(ios::left) << ppuzzlestr[k][j + sidenum * i];
 			}
 			ofile << endl;
 		}
+		ofile << endl;
 	}
 	ofile.close();
 }

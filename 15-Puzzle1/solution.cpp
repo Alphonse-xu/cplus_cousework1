@@ -14,20 +14,104 @@
 using namespace std;
 
 void solution::mapsequence() {
+	for (int k = 0; k < config_num; k++)
+	{
+		unsigned long long temp = 1;
+		row.resize(config_num);
+		int continue_num = 0;
+		vector<vector<unsigned long long>> fakepuzzle(config_num);
+		for (int i = 0; i < config_num; i++)
+		{
+			for (int j = 0; j < puzzlenum - 1; j++)
+			{
+				fakepuzzle[i].push_back(spuzzle[i][j]);
+			}
+		}
 
-	thread t1([this]() 
+		sort(&fakepuzzle[k][0], &fakepuzzle[k][14]);
+		//判断有几个连续组
+		for (int i = 0; i < puzzlenum-sidenum; i++) {
+			if ((spuzzle[k][i] + 3) == spuzzle[k][i+3]) {
+				continue_num++;
+			}
+		}
+		//公式(n2-1-n)!*n连续数*((n-1)/2 + n2-1-(n-1))!*(n-1)连续数/2
+		for (int i = 1; i <= puzzlenum - sidenum-1; i++) {
+			temp = temp * i;
+		}
+		row[k] = temp  * continue_num * 3 / 2;
+
+		continue_num = 0;
+		temp = 1;
+		for (int i = 0; i < puzzlenum - sidenum + 1; i++) {
+			if ((spuzzle[k][i] + 2) == spuzzle[k][i + 2]) {
+				continue_num++;
+			}
+		}
+		for (int i = 1; i <= puzzlenum - sidenum; i++) {
+			temp = temp * i;
+		}
+		row[k] = row[k] + (temp  * continue_num / 2);
+	}
+	//多线程
+	thread t1([this]()
 	{
 		this->printcon();
 	});
-	thread t2([this]() 
+	thread t2([this]()
 	{
 		this->creatfile();
 	});
 
-	t1.join(); // This waits for the function to compelete
+	t1.join();
 	t2.join();
 }
 
+//23排序计数
+void solution::mapsequence_all() {
+	for (int k = 0; k < config_num; k++) 
+	{
+		int total = sidenum * sidenum - 1;
+		//
+		for (int i = 0; i < (total - 1); i++)
+		{
+			if ((sidenum - i % sidenum) >= 2)
+			{
+				if ((spuzzle[k][i] + 1) == spuzzle[k][i + 1])
+					row2++;
+				if ((spuzzle[k][i] - 1) == spuzzle[k][i + 1])
+					rev_row2++;
+			}
+		}
+		//
+		for (int i = 0; i < (total - 2); i++)
+		{
+			if ((sidenum - i % sidenum) >= 3)
+			{
+				if ((spuzzle[k][i] + 1) == spuzzle[k][i + 1] && (spuzzle[k][i + 1] + 1) == (spuzzle[k][i + 2]))
+					row3++;
+				if ((spuzzle[k][i] - 1) == spuzzle[k][i + 1] && (spuzzle[k][i + 1] - 1) == (spuzzle[k][i + 2]))
+					rev_row3++;
+			}
+		}
+		//
+		for (int i = 0; i < (total - sidenum); i++)
+		{
+			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum])column2++;
+			if ((spuzzle[k][i] - 1) == spuzzle[k][i + sidenum])rev_column2++;
+		}
+		//
+		for (int i = 0; i < (total - 2 * sidenum); i++)
+		{
+			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum] && (spuzzle[k][i + sidenum] + 1) == spuzzle[k][i + 2 * sidenum])
+				column3++;
+			if ((spuzzle[k][i] - 1) == spuzzle[k][i + sidenum] && (spuzzle[k][i + sidenum] - 1) == spuzzle[k][i + 2 * sidenum])
+				rev_column3++;
+		}
+	}
+}
+
+//读文件
 void solution::readfile() {
 	ifstream ifile("15puzzle.txt", ios::in);
 	if (!ifile) {
@@ -38,79 +122,87 @@ void solution::readfile() {
 	cout << "total configuration number is " << config_num << endl;
 	//读入配置
 	int y = 0;
-	for (size_t i = 0; i < config_num; i++)
+	for (int i = 0; i < config_num; i++)
 	{
 		spuzzle.resize(config_num);
-		for (size_t j = 0; j < puzzlenum; j++)
+		for (int j = 0; j < puzzlenum-1; j++)
 		{
 			ifile >> y;
-			spuzzle[i].push_back(y); //spuzzle[i][x] = y;
+			spuzzle[i].push_back(y); 
 			if (ifile.eof() != 0) break;
 		}
-		if (ifile.eof() != 0) break;//这里好像跳出判定不对
+		if (ifile.eof() != 0) break;
 	}
 	ifile.close();
 	for (int i = 0; i < config_num; i++)
 	{
-		for (size_t j = 0; j < puzzlenum; j++)
+		for (int j = 0; j < puzzlenum-1; j++)
 		{
 			cout << spuzzle[i][j] << " ";
 		} 
 		cout << endl;
 	}
 }
-//打印到屏幕上（可以写一个重载）
+
+//打印到屏幕上
 void solution::printcon() {
 	cout << config_num<<endl;
-	for (size_t k = 0; k < config_num; k++)
+	for (int k = 0; k < config_num; k++)
 	{	//循环输出用户选择数量的配置
-		for (size_t i = 0; i < sqrt(puzzlenum + 1); i++)
+		for (int i = 0; i < sidenum; i++)
 		{
-			for (size_t j = 0; j < sqrt(puzzlenum + 1); j++)
+			for (int j = 0; j < sidenum; j++)
 			{
-				if ((j + 3 * i) == puzzlenum) break;
+				if ((j + sidenum * i) == puzzlenum-1) break;
 				else
-					cout << setw(3) << setiosflags(ios::left) << spuzzle[k][j + 3 * i];
+					cout << setw(3) << setiosflags(ios::left) << spuzzle[k][j + sidenum * i];
 			}
 			cout << endl;
 		}
-		//多线程输出
-
-		cout << "row = " << row<<endl;
-		cout << "column = " << row<<endl;
-		cout << "reverse row = " << row<<endl;
-		cout << "reserve column = " << row<<endl;
+		cout << "total for row & column, including reverse, in this configuration" << endl;
+		cout <<"2 ="<<row2+column2+rev_row2+rev_column2;
+		cout <<"3 ="<<row3+column3+rev_row3+rev_column3;
+		cout << "row = " << row[k]<<endl;
+		cout << "column = " << row[k]<<endl;
+		cout << "reverse row = " << row[k]<<endl;
+		cout << "reserve column = " << row[k]<<endl;
 		cout << endl;
 	}
 }
 
+//创建文件
 void solution::creatfile() {
-	int par = ios::out;
-	//if (cond) 
-	//par = ios::out | std::ios_base::app;
-	ofstream ofile("solution.txt", par);
+	string filename;
+	auto id = filename.find("*");
+	if (id == string::npos) cout << "safe filename" << endl;
+	else
+		cout << "unsafe filename" << endl;
+	ofstream ofile("solution.txt", ios::out);
 	if (!ofile) {
 		cout << "error opening destination file." << endl;
 		return;
 	}
 	//if (!cond)选写 需要读文件判定里面有没有写入过
 	ofile << config_num << endl;//配置数量
-	for (size_t k = 0; k < config_num; k++)
+	for (int k = 0; k < config_num; k++)
 	{	//循环输出用户选择数量的配置
-		for (size_t i = 0; i < sqrt(puzzlenum + 1); i++)
+		for (int i = 0; i < sidenum; i++)
 		{
-			for (size_t j = 0; j < sqrt(puzzlenum + 1); j++)
+			for (int j = 0; j < sidenum; j++)
 			{
-				if ((j + 3 * i) == puzzlenum) break;
+				if ((j + sidenum * i) == puzzlenum-1) break;
 				else
-					ofile << setw(3) << setiosflags(ios::left) << spuzzle[k][j + 3 * i];
+					ofile << setw(3) << setiosflags(ios::left) << spuzzle[k][j + sidenum * i];
 			}
 			ofile << endl;
 		}
-		ofile << "row = " << row << endl;
-		ofile << "column = " << row << endl;
-		ofile << "reverse row = " << row << endl;
-		ofile << "reserve column = " << row << endl;
+		ofile << "total for row & column, including reverse, in this configuration" << endl;
+		ofile << "2 =" << row2 + column2 + rev_row2 + rev_column2;
+		ofile << "3 =" << row3 + column3 + rev_row3 + rev_column3;
+		ofile << "row = " << row[k] << endl;
+		ofile << "column = " << row[k] << endl;
+		ofile << "reverse row = " << row[k] << endl;
+		ofile << "reserve column = " << row[k] << endl;
 		ofile << endl;
 	}
 	ofile.close();

@@ -8,83 +8,6 @@
 #include "solution.h"
 
 using namespace std;
-//
-/*class puzzle {
-	//friend
-public:
-	puzzle() = default;
-	void userenter();
-	void userchoose();
-	void creatfile();
-	void readfile();
-private:
-	vector<int> puzzlestr{ 1,2,3,4,5,6,7,8,zero };
-	int config_num=0;
-};*/
-
-/*
-//移动函数1 2*2移动
-void turnswap(const int *a) {
-	for (int i = 0; i < Tnodenum - 1; i++)
-	{
-		f1[i] = a[i];
-	}
-	swap(f1[5], f1[8]);
-	swap(f1[4], f1[5]);
-	swap(f1[7], f1[4]);
-	swap(f1[8], f1[7]);
-}
-
-//定义搜索重复
-bool comparetree(Tnode *tree, int *PINT) {
-	if (tree)
-	{
-		if (PINT == tree->puzzleint) {
-			return true;
-
-		}
-		else
-		{
-			comparetree(tree->N1, PINT);
-			//comparetree(tree->N2, PINT);
-			//comparetree(tree->N3, PINT);
-			//comparetree(tree->N4, PINT);
-			//comparetree(tree->N5, PINT);
-
-		}
-		return false;
-	}
-	return false;
-}
-//创建树
-void CreateTree(Tnode** T, int *PINT) {
-	if (!T)
-	{
-		*T = new Tnode();
-		for (int i = 0; i < Tnodenum - 1; i++)
-		{
-			(*T)->puzzleint[i] = PINT[i];
-		}
-	}
-	bool key;//判断是否重复
-	//int puzzlestr[8] = { 1,2,3,4,5,6,7,zero };
-	key = comparetree(root, PINT);
-	if (key)  T = nullptr;
-	else
-	{
-
-		for (int i = 0; i < Tnodenum - 1; i++)
-		{
-			(*T)->puzzleint[i] = PINT[i];
-		}
-
-		turnswap(PINT);
-		CreateTree(&(*T)->N1, f1);
-	
-	}
-
-}
-*/
 
 int main()
 {
@@ -93,23 +16,36 @@ int main()
 	bool tryflag = false;
 	bool doflag = true;
 	unsigned int config_num;
-
+	int puzzlestr[16]{ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,zero };
+	int *ppointer = puzzlestr;
+	int **ppuzzlepointer = &ppointer;
 	puzzle p15;
 	solution s15;
 	do {
-		
+		cout << "choose which function do you want" << endl<<"";
+
 		do {
 			cout << "if you want to enter your puzzle.please press 1" << endl << "if you want to creat puzzle in rando way.please press 2 " << endl;
 			cin >> mod;
 			switch (mod) {
 			case 1:
-				p15.userenter();
+				cout << "enter the size of puzzle you want" << endl;
+				cin >> p15.sidenum;
+				s15.sidenum = p15.sidenum;
+				p15.puzzlenum = p15.sidenum * p15.sidenum;
+				s15.puzzlenum = s15.sidenum * s15.sidenum;
+				p15.userenter(ppuzzlepointer);
 				p15.creatfile();
 				flag = false;
 				break;
 			case 2:
 				cout << "how many configurations you want?" << endl;
 				cin >> config_num;
+				cout << "enter the size of puzzle you want" << endl;
+				cin >> p15.sidenum;
+				s15.sidenum = p15.sidenum;
+				p15.puzzlenum = p15.sidenum * p15.sidenum;
+				s15.puzzlenum = s15.sidenum * s15.sidenum;
 				p15.userchoose(config_num);
 				p15.creatfile(config_num);
 				flag = false;
@@ -120,7 +56,6 @@ int main()
 			}
 		}while (flag);
 		
-		
 		try {
 			s15.readfile();
 		}
@@ -129,7 +64,6 @@ int main()
 		}
 		s15.mapsequence();
 		//再来一次
-		
 		do {
 			cout << "do you want to try again?press 1 to continue. press 2 to exit." << endl;
 			cin >> mod;
@@ -150,9 +84,6 @@ int main()
 		
 	} while (doflag);
 	return 0;
-	//Tnode** treelocation = &root;
-	//CreateTree(treelocation, puzzlestr);
-	//cout << root << endl;
 
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
