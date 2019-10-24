@@ -153,11 +153,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="father.h" />
     <ClInclude Include="Puzzle.h" />
     <ClInclude Include="solution.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="15-Puzzle1.cpp" />
+    <ClCompile Include="father.cpp" />
     <ClCompile Include="Puzzle.cpp" />
     <ClCompile Include="solution.cpp" />
   </ItemGroup>

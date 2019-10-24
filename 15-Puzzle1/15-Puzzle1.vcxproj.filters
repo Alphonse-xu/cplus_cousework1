@@ -21,6 +21,9 @@
     <ClInclude Include="solution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="father.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="15-Puzzle1.cpp">
@@ -30,6 +33,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="solution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="father.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

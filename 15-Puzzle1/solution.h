@@ -1,16 +1,14 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H	
 
+#include "father.h"
 #include <vector>
 using namespace std;
 
 
-
-class solution{
+class solution:public father{
 public:
 	solution()=default;
-	int puzzlenum = 16;
-	int sidenum = 4;
 	void readfile();
 	void mapsequence();
 	void printcon();

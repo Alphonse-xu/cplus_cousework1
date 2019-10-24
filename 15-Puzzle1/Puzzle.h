@@ -1,17 +1,17 @@
 ﻿#ifndef PUZZLE_H
 #define PUZZLE_H	
 
+
+#include "father.h"
 #include <algorithm>
 #include <vector>
 using namespace std;
 
 constexpr int zero = 100;
 
-class puzzle {
+class puzzle:public father{
 public:
 	puzzle() = default;
-	int puzzlenum = 16;
-	int sidenum = 4;
 	void userenter();
 	template<typename T> void userchoose(T& num){
 		//用户选择数字随机生成配置
