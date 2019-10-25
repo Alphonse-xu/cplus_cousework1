@@ -6,7 +6,7 @@
 
 #include "Puzzle.h"
 #include "solution.h"
-
+#include <ctime>
 using namespace std;
 
 
@@ -45,6 +45,7 @@ int main()
 				s15.sidenum = p15.sidenum;
 				p15.puzzlenum = p15.sidenum * p15.sidenum;
 				s15.puzzlenum = s15.sidenum * s15.sidenum;
+				srand(time(NULL));
 				p15.userchoose(config_num);
 				p15.creatfile(config_num);
 				flag = false;

@@ -75,7 +75,7 @@ void puzzle::creatfile(int num) {
 		cout << "error opening destination file." << endl;
 		return;
 	}
-	//if (!cond)选写 需要读文件判定里面有没有写入过
+
 	ofile << num << endl;//配置数量
 	for (int k = 0; k < num; k++)
 	{	//循环输出用户选择数量的配置

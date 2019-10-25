@@ -74,7 +74,7 @@ void solution::mapsequence_all() {
 	for (int k = 0; k < config_num; k++) 
 	{
 		int total = sidenum * sidenum - 1;
-		//
+		//2连
 		for (int i = 0; i < (total - 1); i++)
 		{
 			if ((sidenum - i % sidenum) >= 2)
@@ -85,7 +85,7 @@ void solution::mapsequence_all() {
 					rev_row2++;
 			}
 		}
-		//
+		//3连
 		for (int i = 0; i < (total - 2); i++)
 		{
 			if ((sidenum - i % sidenum) >= 3)
@@ -96,7 +96,7 @@ void solution::mapsequence_all() {
 					rev_row3++;
 			}
 		}
-		//
+		//2列
 		for (int i = 0; i < (total - sidenum); i++)
 		{
 			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum])
@@ -104,7 +104,7 @@ void solution::mapsequence_all() {
 			if ((spuzzle[k][i] - 1) == spuzzle[k][i + sidenum])
 				rev_column2++;
 		}
-		//
+		//2列
 		for (int i = 0; i < (total - 2 * sidenum); i++)
 		{
 			if ((spuzzle[k][i] + 1) == spuzzle[k][i + sidenum] && (spuzzle[k][i + sidenum] + 1) == spuzzle[k][i + 2 * sidenum])
@@ -150,6 +150,13 @@ void solution::readfile() {
 
 //打印到屏幕上
 void solution::printcon() {
+	string filename = "solution";
+	//文件名判定
+	auto id = filename.find("*");
+	if (id == string::npos) cout << "safe filename" << endl;
+	else
+		cout << "unsafe filename" << endl;
+
 	cout << config_num<<endl;
 	for (int k = 0; k < config_num; k++)
 	{	//循环输出用户选择数量的配置
@@ -176,17 +183,14 @@ void solution::printcon() {
 
 //创建文件
 void solution::creatfile() {
-	string filename;
-	auto id = filename.find("*");
-	if (id == string::npos) cout << "safe filename" << endl;
-	else
-		cout << "unsafe filename" << endl;
+
 	ofstream ofile("solution.txt", ios::out);
+
 	if (!ofile) {
 		cout << "error opening destination file." << endl;
 		return;
 	}
-	//if (!cond)选写 需要读文件判定里面有没有写入过
+
 	ofile << config_num << endl;//配置数量
 	for (int k = 0; k < config_num; k++)
 	{	//循环输出用户选择数量的配置

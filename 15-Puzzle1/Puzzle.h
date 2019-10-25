@@ -5,6 +5,7 @@
 #include "father.h"
 #include <algorithm>
 #include <vector>
+#include <ctime>
 using namespace std;
 
 constexpr int zero = 100;
